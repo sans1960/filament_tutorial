@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables\Columns\TextColumn;
@@ -33,6 +34,7 @@ class RoleResource extends Resource
                     ->required()
                     ->maxLength(200)
                     ->unique(ignoreRecord: true),
+                  
                     ])
             ]);
     }
@@ -43,13 +45,14 @@ class RoleResource extends Resource
             ->columns([
                 TextColumn::make('id')->sortable(),
                 TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('created_at')->dateTime()
+                TextColumn::make('created_at')->dateTime('d-M-Y')
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -70,5 +73,9 @@ class RoleResource extends Resource
             'create' => Pages\CreateRole::route('/create'),
             'edit' => Pages\EditRole::route('/{record}/edit'),
         ];
-    }    
+    } 
+    public static function getEloquentQuery(): Builder
+    {
+    return parent::getEloquentQuery()->where('name','!=','Administrador');
+     }   
 }

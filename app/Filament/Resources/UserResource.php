@@ -8,6 +8,7 @@ use App\Models\User;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
@@ -48,6 +49,12 @@ class UserResource extends Resource
                 ->required(fn (Page $livewire):bool => $livewire instanceof CreateRecord)
                 ->minLength(8)
                 ->dehydrated(false),
+                Select::make('roles')
+                ->multiple()
+                ->relationship('roles', 'name')->preload(),
+                Select::make('permissions')
+                ->multiple()
+                ->relationship('permissions', 'name')->preload()
             ]);
     }
 
@@ -59,7 +66,7 @@ class UserResource extends Resource
                 TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('email')->sortable()->searchable(),
                 
-                TextColumn::make('created_at')->dateTime()
+                TextColumn::make('created_at')->dateTime('d-M-Y')
             ])
             ->filters([
                 //
