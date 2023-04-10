@@ -22,12 +22,14 @@ use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use App\Filament\Resources\EmployeeResource\Widgets\EmployeeStatsOverview;
 
 class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $navigationLabel = 'Empleados';
 
     public static function form(Form $form): Form
     {
@@ -85,18 +87,18 @@ class EmployeeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->sortable(),
-                TextColumn::make('first_name')->sortable()->searchable(),
-                TextColumn::make('last_name')->sortable()->searchable(),
-                TextColumn::make('phone_number')->sortable()->searchable(),
-                TextColumn::make('address')->sortable()->searchable(),
-                TextColumn::make('zip_code')->sortable()->searchable(),
-                TextColumn::make('country.name')->sortable(),
-                TextColumn::make('state.name')->sortable(),
-                TextColumn::make('city.name')->sortable(),
-                TextColumn::make('department.name')->sortable(),
+                TextColumn::make('first_name')->sortable()->searchable()->toggleable(),
+                TextColumn::make('last_name')->sortable()->searchable()->toggleable(),
+                TextColumn::make('phone_number')->sortable()->searchable()->toggleable(),
+                TextColumn::make('address')->sortable()->searchable()->toggleable(),
+                TextColumn::make('zip_code')->sortable()->searchable()->toggleable(),
+                TextColumn::make('country.name')->sortable()->toggleable(),
+                TextColumn::make('state.name')->sortable()->toggleable(),
+                TextColumn::make('city.name')->sortable()->toggleable(),
+                TextColumn::make('department.name')->sortable()->toggleable(),
                 
-                TextColumn::make('date_hired')->dateTime(),
-                TextColumn::make('birth_date')->dateTime()
+                TextColumn::make('date_hired')->dateTime()->toggleable(),
+                TextColumn::make('birth_date')->dateTime()->toggleable()
             ])
             ->filters([
                 SelectFilter::make('department')->relationship('department', 'name')
@@ -114,6 +116,12 @@ class EmployeeResource extends Resource
     {
         return [
             //
+        ];
+    }
+    public static function getWidgets(): array
+    {
+        return [
+            EmployeeStatsOverview::class,
         ];
     }
     

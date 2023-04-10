@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CountryResource\Pages;
 use App\Filament\Resources\CountryResource\RelationManagers;
+use App\Filament\Resources\CountryResource\RelationManagers\EmployeesRelationManagers;
+use App\Filament\Resources\CountryResource\RelationManagers\StatesRelationManagers;
 use App\Models\Country;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -22,6 +24,7 @@ class CountryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-flag';
     protected static ?string $navigationGroup = 'System Management';
+    protected static ?string $navigationLabel = 'Paises';
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -64,7 +67,8 @@ class CountryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\EmployeesRelationManager::class,
+            RelationManagers\StatesRelationManager::class,
         ];
     }
     
